@@ -1,6 +1,14 @@
-okk;
-commi 1;
-commit 2;//edite;
-commit3;
-commit
-gh12
+
+
+#define rx 16
+#define tx 17
+
+void setup() {
+    serial.begin(115200);
+  serial.println("1");
+  serial.println("2");
+}
+void loop()
+{
+
+}
