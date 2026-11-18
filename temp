@@ -1,41 +1,29 @@
-#include <Wire.h>
-
-#define SDA_PIN 21
-#define SCL_PIN 22
-#define LM75_ADDR 0x48
-
-void setup()
-{
-Serial.begin(115200);
-
-Wire.begin(SDA_PIN, SCL_PIN);
+#include<wire.h>
+#define sda 12
+#define scl 13
+#define add 0x10
+void setup(){
+    serial.begin(115000);
+    wire.begin(sda,scl);
 }
+void loop(){
+wire.beginTransmission(add);
+wire.write(0x00);
+wire.endtransmission();
+wire.requestForm(add,2);
+if(wire.available()==2){
+    int msb=wire.read();
+    int lsb=wire.read();
+    int value=(msb<<8)|lsb;
+    value=value>>7;
+    if(value&0x100){
+        value-=512;
+    }
+    float temp=value*0.5;
+    serial.print("temp");
 
-void loop()
-{
-Wire.beginTransmission(LM75_ADDR);
-Wire.write(0x00);
-Wire.endTransmission();
-
-Wire.requestFrom(LM75_ADDR, 2);
-
-if (Wire.available() == 2)
-{
-int msb = Wire.read();
-int lsb = Wire.read();
-
-int value = (msb << 8) | lsb;
-value = value >> 7;
-
-if (value & 0x100)
-value -= 512;
-
-float temp = value * 0.5;
-
-Serial.print("Temperature: ");
-Serial.print(temp);
-Serial.println(" C");
 }
-
 delay(1000);
+
 }
+
